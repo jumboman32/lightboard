@@ -147,7 +147,11 @@ function Lane({
   const [inlineTitle, setInlineTitle] = useState<string | null>(null);
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
   return (
-    <section ref={setNodeRef} className={`lane ${isOver ? "over" : ""}`}>
+    <section
+      ref={setNodeRef}
+      className={`lane ${isOver ? "over" : ""}`}
+      style={{ "--column-color": column.color } as React.CSSProperties}
+    >
       <header className="lane-header">
         <span className="dot" style={{ background: column.color }} />
         <h3>{column.name}</h3>

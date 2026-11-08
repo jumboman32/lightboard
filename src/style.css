@@ -421,15 +421,16 @@ h2 {
   min-height: 20px;
 }
 .task-card {
-  border: 1px solid var(--border);
-  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--column-color) 40%, var(--border));
+  border-left: 3px solid var(--column-color);
+  background: color-mix(in srgb, var(--column-color) 14%, var(--surface));
   border-radius: 8px;
   margin-bottom: 10px;
   padding: 12px;
   box-shadow: 0 2px 3px #25234403;
 }
 .task-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  border-color: var(--column-color);
 }
 .dragging {
   opacity: 0.45;
