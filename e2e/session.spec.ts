@@ -24,9 +24,7 @@ test("unauthorized workspace shows sign-in and recovers after login", async ({
     });
   });
   await page.goto("/");
-  await expect(
-    page.getByRole("heading", { name: "Welcome to lightboard." }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
   await page.getByLabel("Instance access key").fill("wrong");
   await page.getByRole("button", { name: "Open workspace" }).click();
   await expect(page.getByRole("alert")).toContainText("Invalid access key");

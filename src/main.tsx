@@ -28,7 +28,6 @@ import {
   Moon,
   PanelLeftClose,
   PanelLeftOpen,
-  ArrowUpRight,
   Download,
   Upload,
   Check,
@@ -38,7 +37,6 @@ import {
   Copy,
   Archive,
   Star,
-  ChevronDown,
   Settings2,
 } from "lucide-react";
 import {
@@ -250,8 +248,7 @@ function Login() {
         <span className="brand-mark">
           <Columns3 size={24} />
         </span>
-        <h1>Welcome to lightboard.</h1>
-        <p>Your private space for a little more focus.</p>
+        <h1>Sign in</h1>
         <label>
           Instance access key
           <input
@@ -267,10 +264,6 @@ function Login() {
         <button className="button primary" disabled={busy}>
           {busy ? "Signing in…" : "Open workspace"}
         </button>
-        <p className="metadata">
-          Use the access key configured by your instance owner. Cloudflare
-          Access users can sign in through their protected instance URL.
-        </p>
       </form>
     </div>
   );
@@ -359,9 +352,6 @@ function App() {
   const columns = data.columns
     .filter((c) => c.project_id === projectId)
     .sort((a, b) => a.position - b.position);
-  const projectTasks = data.tasks.filter(
-    (t) => t.project_id === projectId && !t.archived,
-  );
   let visible = data.tasks.filter(
     (t) =>
       (view === "dashboard" || query || t.project_id === projectId) &&
@@ -381,10 +371,6 @@ function App() {
     const p = { urgent: 0, high: 1, medium: 2, low: 3 };
     visible.sort((a, b) => p[a.priority] - p[b.priority]);
   } else visible.sort((a, b) => a.position - b.position);
-  const completed = projectTasks.filter((t) => t.completed_at).length,
-    progress = projectTasks.length
-      ? Math.round((completed / projectTasks.length) * 100)
-      : 0;
   async function newTask(columnId = columns[0]?.id, inlineTitle?: string) {
     if (!project || !columnId) return false;
     const task: Task = {
@@ -531,14 +517,6 @@ function App() {
           </span>
           <strong>lightboard</strong>
         </a>
-        <button className="workspace" onClick={() => setHelp(true)}>
-          <span className="avatar">P</span>
-          <span>
-            Personal workspace<small>Your space to make things happen</small>
-          </span>
-          <ChevronDown size={14} />
-        </button>
-        <div className="nav-label">WORKSPACE</div>
         <button
           className={`nav-item ${view === "dashboard" ? "active" : ""}`}
           onClick={() => {
@@ -613,15 +591,6 @@ function App() {
           <Plus size={17} /> New project
         </button>
         <div className="sidebar-bottom">
-          <div className="quiet-box">
-            <span>Small steps. Big things.</span>
-            <p>A little focus goes a long way.</p>
-            <div className="decor-lines">
-              <i />
-              <i />
-              <i />
-            </div>
-          </div>
           <button
             className="nav-item"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -638,10 +607,6 @@ function App() {
               onChange={(e) => setAccent(e.target.value)}
             />
           </label>
-          <button className="nav-item" onClick={() => setHelp(true)}>
-            <span className="avatar small">P</span> Personal account{" "}
-            <span className="online" />
-          </button>
         </div>
       </aside>
       <main>
@@ -660,7 +625,7 @@ function App() {
           <div className="breadcrumb">
             Workspace <span>/</span>{" "}
             <strong>
-              {view === "dashboard" ? "Overview" : project?.name || "Welcome"}
+              {view === "dashboard" ? "Overview" : project?.name || "Projects"}
             </strong>
           </div>
           <div className="search">
@@ -668,7 +633,7 @@ function App() {
             <input
               ref={searchRef}
               aria-label="Search all tasks"
-              placeholder="Search anything…"
+              placeholder="Search tasks"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -703,13 +668,12 @@ function App() {
           )}
           <div className="page-heading">
             <div>
-              <div className="eyebrow">YOUR SPACE, AT YOUR PACE</div>
               <h1>
                 {query
                   ? "Search results"
                   : view === "dashboard"
-                    ? "A little clarity. A lot of possibility."
-                    : project?.name || "Make room for your next idea."}
+                    ? "Overview"
+                    : project?.name || "Projects"}
                 {project && view !== "dashboard" && !query && (
                   <button
                     className="icon favorite"
@@ -732,13 +696,6 @@ function App() {
                   </button>
                 )}
               </h1>
-              <p>
-                {view === "dashboard"
-                  ? "Everything you’re working on, all in one place."
-                  : project
-                    ? "Turn your plans into progress. One task at a time."
-                    : "Create your first project and turn plans into progress."}
-              </p>
             </div>
             <div className="heading-actions">
               {project && (
@@ -762,13 +719,7 @@ function App() {
             <div className="empty">Connecting to your workspace…</div>
           ) : !data.projects.length ? (
             <div className="welcome">
-              <div className="welcome-icon">
-                <Columns3 size={38} />
-              </div>
-              <h2>A fresh start for your ideas</h2>
-              <p>
-                Projects keep your tasks organized. Create one to get started.
-              </p>
+              <h2>No projects</h2>
               <button
                 className="button primary"
                 onClick={() =>
@@ -788,53 +739,6 @@ function App() {
             </div>
           ) : (
             <>
-              <div className="stats-strip">
-                <div>
-                  <span className="stat-icon lilac">
-                    <Columns3 size={18} />
-                  </span>
-                  <span>
-                    <strong>{projectTasks.length}</strong>
-                    <small>Total tasks</small>
-                  </span>
-                </div>
-                <div>
-                  <span className="stat-icon blue">
-                    <ArrowUpRight size={18} />
-                  </span>
-                  <span>
-                    <strong>
-                      {
-                        projectTasks.filter(
-                          (t) =>
-                            !t.completed_at &&
-                            data.columns.find((c) => c.id === t.column_id)
-                              ?.name === "In Progress",
-                        ).length
-                      }
-                    </strong>
-                    <small>In progress</small>
-                  </span>
-                </div>
-                <div>
-                  <span className="stat-icon green">
-                    <Check size={18} />
-                  </span>
-                  <span>
-                    <strong>{completed}</strong>
-                    <small>Completed</small>
-                  </span>
-                </div>
-                <div className="progress-stat">
-                  <span>
-                    <strong>{progress}%</strong>
-                    <small>Project progress</small>
-                  </span>
-                  <div className="progress-track">
-                    <i style={{ width: progress + "%" }} />
-                  </div>
-                </div>
-              </div>
               <div className="view-toolbar">
                 <div className="tabs">
                   {[
@@ -899,11 +803,11 @@ function App() {
                 </Suspense>
               ) : view === "board" ? (
                 <>
-                  <div className="board-note">
-                    {sort !== "manual"
-                      ? "Choose manual order to drag tasks."
-                      : "Drag the grip on a card to move it. Keyboard: Space, arrows, Space."}
-                  </div>
+                  {sort !== "manual" && (
+                    <p className="board-note">
+                      Choose manual order to drag tasks.
+                    </p>
+                  )}
                   <DndContext
                     sensors={sensors}
                     collisionDetection={closestCorners}
@@ -952,9 +856,6 @@ function App() {
             </>
           )}
           <footer>
-            <span>
-              <span className="online" /> A little more organized, every day.
-            </span>
             <div>
               <button
                 onClick={() =>
@@ -1029,7 +930,7 @@ function App() {
                 required
                 maxLength={300}
                 aria-label="Task title"
-                placeholder="What needs to get done?"
+                placeholder="Task title"
                 value={draft.title}
                 onChange={(e) => setDraft({ ...draft, title: e.target.value })}
               />
@@ -1038,7 +939,7 @@ function App() {
                 <textarea
                   rows={4}
                   maxLength={20000}
-                  placeholder="Add a little context…"
+                  placeholder="Description"
                   value={draft.description}
                   onChange={(e) =>
                     setDraft({ ...draft, description: e.target.value })
@@ -1468,7 +1369,7 @@ function App() {
           )}
           {help && (
             <>
-              <h2>A little help for your flow</h2>
+              <h2>Keyboard shortcuts</h2>
               <p>
                 <kbd>N</kbd> New task · <kbd>/</kbd> Search · <kbd>?</kbd>{" "}
                 Shortcuts · <kbd>Esc</kbd> Close editor
@@ -1480,9 +1381,6 @@ function App() {
               <p>
                 Back up your workspace as JSON. Restore replaces all data. CSV
                 exports work with spreadsheet apps.
-              </p>
-              <p className="metadata">
-                Lightboard · A quiet place to get things done.
               </p>
               <button
                 className="text-button"

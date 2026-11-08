@@ -112,9 +112,7 @@ export default function Views({
               {g.tasks.length ? (
                 g.tasks.map(row)
               ) : (
-                <p className="empty-small">
-                  All clear here. A little breathing room.
-                </p>
+                <p className="empty-small">No tasks.</p>
               )}
             </section>
           ))}
@@ -242,13 +240,7 @@ export default function Views({
         <span>Status</span>
         <span>Due date</span>
       </div>
-      {tasks.length ? (
-        tasks.map(row)
-      ) : (
-        <div className="empty">
-          No tasks here yet. Make space for something good.
-        </div>
-      )}
+      {tasks.length ? tasks.map(row) : <div className="empty">No tasks.</div>}
     </section>
   );
 }
