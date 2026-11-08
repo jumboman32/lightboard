@@ -1,0 +1,1 @@
+Before public release: choose a license, replace the screenshot placeholder, verify a production Access deployment, and run the documented manual release checks. Never publish backups or local D1 state.

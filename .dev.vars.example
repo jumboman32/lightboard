@@ -1,0 +1,4 @@
+# LOCAL ONLY. Never set LOCAL_DEV on deployed Workers.
+LOCAL_DEV=true
+# Production secrets: ACCESS_TEAM_DOMAIN and ACCESS_AUD
+# Alternative production authentication: SINGLE_USER_KEY (openssl rand -hex 32)
