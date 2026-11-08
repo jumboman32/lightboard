@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -23,8 +23,14 @@ export default function Views({
   const [month, setMonth] = useState(
     () => new Date(new Date().getFullYear(), new Date().getMonth(), 1),
   );
+  const taskColor = (t: Task): CSSProperties =>
+    ({
+      "--column-color":
+        data.columns.find((c) => c.id === t.column_id)?.color ||
+        "var(--accent)",
+    }) as CSSProperties;
   const row = (t: Task) => (
-    <div className="list-row" key={t.id}>
+    <div className="list-row" key={t.id} style={taskColor(t)}>
       <button
         className={`task-check ${t.completed_at ? "done" : ""}`}
         aria-label={`${t.completed_at ? "Reopen" : "Complete"} ${t.title}`}
@@ -216,6 +222,7 @@ export default function Views({
                       <button
                         key={t.id}
                         className={`calendar-task ${t.completed_at ? "complete" : ""}`}
+                        style={taskColor(t)}
                         onClick={() => open(t)}
                       >
                         {t.title}

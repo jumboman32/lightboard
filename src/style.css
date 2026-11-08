@@ -621,6 +621,8 @@ footer button {
   overflow-x: auto;
 }
 .list-row {
+  background: color-mix(in srgb, var(--column-color) 14%, var(--surface));
+  border-left: 3px solid var(--column-color);
   display: grid;
   grid-template-columns: 20px minmax(140px, 1fr) 70px 100px 90px;
   align-items: center;
@@ -630,7 +632,7 @@ footer button {
   font-size: 10px;
 }
 .list-row:last-child {
-  border: 0;
+  border-bottom: 0;
 }
 .list-heading {
   display: grid;
@@ -763,8 +765,10 @@ footer button {
 }
 .calendar-task {
   display: block;
-  background: var(--hover);
-  color: var(--accent);
+  background: color-mix(in srgb, var(--column-color) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--column-color) 40%, var(--border));
+  border-left: 3px solid var(--column-color);
+  color: var(--text);
   font-size: 9px;
   text-align: left;
   padding: 5px;
