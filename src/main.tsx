@@ -286,7 +286,7 @@ function App() {
     [priority, setPriority] = useState("all"),
     [sort, setSort] = useState("manual");
   const [collapsed, setCollapsed] = useState(window.innerWidth < 801),
-    [theme, setTheme] = useState(localStorage.getItem("theme") || "light"),
+    [theme, setTheme] = useState(localStorage.getItem("theme") || "dark"),
     [accent, setAccent] = useState(localStorage.getItem("accent") || "#7460db");
   const [draft, setDraft] = useState<Task | null>(null),
     [projectDraft, setProjectDraft] = useState<Project | null>(null),
