@@ -4,7 +4,7 @@ A quiet place to get things done. A self-hosted, single-user Kanban and task man
 
 ## Start locally
 
-Requires Node.js 22.12+ (or a current supported Node release) and npm. No Cloudflare account is needed for local work.
+Requires Node.js 22.12+ (or a current supported Node release) and npm.
 
 ```sh
 npm ci
